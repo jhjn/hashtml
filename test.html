@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
+<link rel="stylesheet" type="text/css" href="/style.css">
+<script src="./openpgp.min.js"></script>
+<script src="./hashtml.js"></script>
 <body>
 
-<h1>Encrypted Message</h1>
-<p id="error"></p>
-<p id="encrypted">-----BEGIN PGP MESSAGE-----
+<h1>Message</h1>
+<pre><code id="decrypted"></code></pre>
+<pre><code id="encrypted" style="color:#fff">
+-----BEGIN PGP MESSAGE-----
 
 wcDMA45Hpa7DfR9WAQwArNsupv4rNC0/39SfzviboWQ63A4PlwTZ5T39RSqp
 /hoxlF0ki/j05uuN5odyY0IuZAwVuAE0EDreTnwMepqfhCkVClmvMNRKOwv3
@@ -28,12 +32,6 @@ oAp3vMScCnXMZ5Pf38oAiDQHXoWjoX9cACBpEoQwcq9J+1R5BEgzWbTZPVPj
 YLpDIwJTddRCVMCmocjVdKuG6SPyxriVdPTbUhodBYPM5mSGiTYkkudi6xf4
 uCOPsOauFoBHVV5ZPAjmXXI=
 =YjDI
------END PGP MESSAGE-----</p>
-<p id="decrypted"></p>
-
-<script src="./openpgp.min.js"></script>
-<script src="./hashtml.js"></script>
-
+-----END PGP MESSAGE-----</code></pre>
 </body>
 </html>
-

@@ -135,7 +135,9 @@ XC9qJoZsR46abxHWu6fJ+LX8m/OrQY0KQsKe+liIEuLQ5g==
             passphrase
         });
     } catch (e) {
-        document.getElementById("error").innerHTML = "Incorrect Permissions";
+        document.getElementById("decrypted").innerHTML = "...incorrect password...";
+        document.getElementById("decrypted").style.background = "#eb9393"
+        document.getElementById("encrypted").style.color = "#222"
         return
     }
 
@@ -150,13 +152,5 @@ XC9qJoZsR46abxHWu6fJ+LX8m/OrQY0KQsKe+liIEuLQ5g==
         decryptionKeys: privateKey
     });
     document.getElementById("decrypted").innerHTML = decrypted;
-    console.log(decrypted);
-
-    // check signature validity (signed messages only)
-    try {
-        await signatures[0].verified; // throws on invalid signature
-        console.log('Signature is valid');
-    } catch (e) {
-        document.getElementById("error").innerHTML = 'Signature could not be verified: ' + e.message;
-    }
+    document.getElementById("decrypted").style.background = "#93eb93"
 })();
