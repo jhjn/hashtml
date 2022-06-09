@@ -1,78 +1,33 @@
-const data = "Hello, World!";
-const key = window.location.hash.slice(1);
-console.log(hash);
+const crypt = (salt, text) => {
+  const textToChars = (text) => text.split("").map((c) => c.charCodeAt(0));
+  const byteHex = (n) => ("0" + Number(n).toString(16)).substr(-2);
+  const applySaltToChar = (code) => textToChars(salt).reduce((a, b) => a ^ b, code);
 
-async function genEncryptionKey (password, mode, length) {
-    var algo = {
-        name: 'PBKDF2',
-        hash: 'SHA-256',
-        salt: new TextEncoder().encode('a-unique-salt'),
-        iterations: 1000
-    };
-    var derived = { name: mode, length: length };
-    var encoded = new TextEncoder().encode(password);
-    var key = await crypto.subtle.importKey('raw', encoded, { name: 'PBKDF2' }, false, ['deriveKey']);
-
-    return crypto.subtle.deriveKey(algo, key, derived, false, ['encrypt', 'decrypt']);
-}
-
-async function encrypt (text, password, mode, length, ivLength) {
-    var algo = {
-        name: mode,
-        length: length,
-        iv: crypto.getRandomValues(new Uint8Array(ivLength))
-    };
-    var key = await genEncryptionKey(password, mode, length);
-    var encoded = new TextEncoder().encode(text);
-
-    return {
-        cipherText: await crypto.subtle.encrypt(algo, key, encoded),
-        iv: algo.iv
-    };
-}
-
-function hex (buff) {
-    return [].map.call(new Uint8Array(buff), b => ('00' + b.toString(16)).slice(-2)).join('');
-}
-
-async function decrypt (encrypted, password, mode, length) {
-var algo = {
-name: mode,
-length: length,
-iv: encrypted.iv
+  return text
+    .split("")
+    .map(textToChars)
+    .map(applySaltToChar)
+    .map(byteHex)
+    .join("");
 };
-var key = await genEncryptionKey(password, mode, length);
-var decrypted = await crypto.subtle.decrypt(algo, key, encrypted.cipherText);
 
-return new TextDecoder().decode(decrypted);
-}
+const decrypt = (salt, encoded) => {
+  const textToChars = (text) => text.split("").map((c) => c.charCodeAt(0));
+  const applySaltToChar = (code) => textToChars(salt).reduce((a, b) => a ^ b, code);
+  return encoded
+    .match(/.{1,2}/g)
+    .map((hex) => parseInt(hex, 16))
+    .map(applySaltToChar)
+    .map((charCode) => String.fromCharCode(charCode))
+    .join("");
+};
 
-(async () => {
+const key = window.location.hash.slice(1);
+console.log(key);
+const encrypted = document.getElementById("encrypted").innerHTML;
 
-    var mode = 'AES-GCM',
-    length = 256,
-    ivLength = 12;
+// Uncomment below to log what the text if encrypted would look like.
+// console.log(encrypt(key,encrypted))
 
-    var encrypted = await encrypt('Secret text', 'password', mode, length, ivLength);
-    console.log(encrypted); // { cipherText: ArrayBuffer, iv: Uint8Array }
+document.getElementById("decrypted").innerHTML = decrypt(key,encrypted);
 
-    var decrypted = await decrypt(encrypted, 'password', mode, length);
-    console.log(decrypted); // Secret text
-
-})();
-
-    // encrypt('Secret text', 'password', 'AES-GCM', 256, 12).then(encrypted => {
-    //     console.log(encrypted); // { cipherText: ArrayBuffer, iv: Uint8Array }
-    //     console.log(hex(encrypted.cipherText));
-    // });
-
-    // const digest = await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(data));
-    // console.log(digest);
-
-    // const encrypted = await window.crypto.subtle.encrypt(
-    //     {name: 'RSA-OAEP'},
-    //     key,
-    //     new TextEncoder().encode(data)
-    // );
-    // console.log(encrypted);
-// })();
