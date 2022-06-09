@@ -24,9 +24,5 @@ const decrypt = (salt, encoded) => {
 
 const key = window.location.hash.slice(1);
 const encrypted = document.getElementById("encrypted").innerHTML;
-
-// Uncomment below to log what the text if encrypted would look like.
-// console.log(encrypt(key,encrypted))
-
 document.getElementById("decrypted").innerHTML = decrypt(key,encrypted);
 
