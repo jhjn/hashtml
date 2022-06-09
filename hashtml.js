@@ -1,4 +1,4 @@
-const crypt = (salt, text) => {
+const encrypt = (salt, text) => {
   const textToChars = (text) => text.split("").map((c) => c.charCodeAt(0));
   const byteHex = (n) => ("0" + Number(n).toString(16)).substr(-2);
   const applySaltToChar = (code) => textToChars(salt).reduce((a, b) => a ^ b, code);
@@ -23,7 +23,6 @@ const decrypt = (salt, encoded) => {
 };
 
 const key = window.location.hash.slice(1);
-console.log(key);
 const encrypted = document.getElementById("encrypted").innerHTML;
 
 // Uncomment below to log what the text if encrypted would look like.

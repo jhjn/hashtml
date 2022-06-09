@@ -5,6 +5,5 @@ body{
 	padding: 0 10px;
 }
 h1,h2,h3{font-family: sans-serif}
-a,a:visited{color:#555}
-pre{overflow:auto}
-code{padding: 1em}
+pre{overflow-wrap:break-word; overflow:auto}
+#encrypted{font-size: 0}
